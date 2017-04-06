@@ -52,9 +52,30 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. A lot of various models and techniques have been tried, including LeNet, models by Comma, NVIDIA. Even tried to apply transfer learning from VGG-16 trained for ImageNet, but with little success.
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My final model consisted of the following layers:
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+| Layer                     |     Description	        					| 
+|:-------------------------:|:---------------------------------------------:| 
+| Input                     | 160x320x3 RGB image   						|
+| Normalizer                | 160x320x3 RGB image   						|
+| Cropping                  | 60 from top, 24 from bottom, outputs 76x320x3	|
+| Convolution 1x1           | 2x2 stride, VALID padding, outputs 38x160x3 	|
+| ELU (exponential LU)      |												|
+| Convolution 3x3           | 1x1 stride, VALID padding, outputs 36x158x16 	|
+| ELU (exponential LU)      |												|
+| Max pooling               | 2x2 stride,  outputs 18x79x16 				|
+| Convolution 3x3           | 1x1 stride, VALID padding, outputs 16x77x32 	|
+| ELU (exponential LU)      |                                               |
+| Max pooling               | 2x2 stride,  outputs 8x38x32                  |
+| Convolution 3x3           | 1x1 stride, VALID padding, outputs 6x36x64 	|
+| ELU (exponential LU)      |                                               |
+| Max pooling               | 2x2 stride,  outputs 3x18x64                  |
+| Fully connected           | 1000        									|
+| Fully connected           | 100        									|
+| Fully connected           | 10        									|
+| Output, Fully connected	| 1                                             |
+
+The model includes ELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
 
 ####2. Attempts to reduce overfitting in the model
 
