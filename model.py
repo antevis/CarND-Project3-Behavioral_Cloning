@@ -160,7 +160,7 @@ def generator(folder, samples, batch_size=32, use_sides=False, use_flips=False, 
                     image, angle = image_angle(file_name=file_name,
                                                angle=steer_angle,
                                                adjustment=adj)
-                    image = hist_eq(image)
+                    #image = hist_eq(image)
 
                     x_train.append(image)
                     y_train.append(angle)
