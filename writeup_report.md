@@ -32,13 +32,14 @@ The goals / steps of this project are the following:
 ####1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
-* model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
+* model.h5 containing a trained convolutional neural network
+* model.py containing the script to create and train the model
+* video.mp4 - a video recording of the vehicle driving autonomously for about one lap around the track 1
 * writeup_report.md summarizing the results
 
 ####2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
+Using the Udacity provided simulator and my drive.py file, the car can drive itself autonomously around the track by executing 
 ```sh
 python drive.py model.h5
 ```
@@ -49,7 +50,7 @@ The model.py file contains the code for training and saving the convolution neur
 
 ###Model Architecture and Training Strategy
 
-####1. An appropriate model architecture has been employed
+####1. A lot of various models and techniques have been tried, including LeNet, models by Comma, NVIDIA. Even tried to apply transfer learning from VGG-16 trained for ImageNet, but with little success.
 
 My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
 
