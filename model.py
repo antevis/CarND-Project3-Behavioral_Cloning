@@ -15,37 +15,37 @@ def pcnt(row, col, ch, crop):
     cnn_model = Sequential()
 
     # Didn't notice any good in centering around zero. Thus, just '/ 255.'
-    cnn_model.add(Lambda(lambda x: x / 255., input_shape=(row, col, ch)))
+    cnn_model.add(Lambda(lambda x: x / 255., input_shape=(row, col, ch), name='normalizer'))
 
     cnn_model.add(Cropping2D(cropping=crop,
-                             input_shape=(row, col, ch)))
+                             input_shape=(row, col, ch), name='cropping'))
 
-    cnn_model.add(Conv2D(3, kernel_size=(1, 1), strides=(2, 2), padding='valid', activation='elu'))
+    cnn_model.add(Conv2D(3, kernel_size=(1, 1), strides=(2, 2), padding='valid', activation='elu', name='cv0'))
 
-    cnn_model.add(Conv2D(16, kernel_size=(3, 3), padding='valid', activation='elu'))
-    cnn_model.add(MaxPooling2D())
-    cnn_model.add(Dropout(0.5))
+    cnn_model.add(Conv2D(16, kernel_size=(3, 3), padding='valid', activation='elu', name='cv1'))
+    cnn_model.add(MaxPooling2D(name='maxPool_cv1'))
+    cnn_model.add(Dropout(0.5, name='dropout_cv1'))
 
-    cnn_model.add(Conv2D(32, kernel_size=(3, 3), padding='valid', activation='elu'))
-    cnn_model.add(MaxPooling2D())
-    cnn_model.add(Dropout(0.5))
+    cnn_model.add(Conv2D(32, kernel_size=(3, 3), padding='valid', activation='elu', name='cv2'))
+    cnn_model.add(MaxPooling2D(name='maxPool_cv2'))
+    cnn_model.add(Dropout(0.5, name='dropout_cv2'))
 
-    cnn_model.add(Conv2D(64, kernel_size=(3, 3), padding='valid', activation='elu'))
-    cnn_model.add(MaxPooling2D())
-    cnn_model.add(Dropout(0.5))
+    cnn_model.add(Conv2D(64, kernel_size=(3, 3), padding='valid', activation='elu', name='cv3'))
+    cnn_model.add(MaxPooling2D(name='maxPool_cv3'))
+    cnn_model.add(Dropout(0.5, name='dropout_cv3'))
 
     cnn_model.add(Flatten())
 
-    cnn_model.add(Dense(1000, activation='elu'))
-    cnn_model.add(Dropout(0.5))
+    cnn_model.add(Dense(1000, activation='elu', name='fc1'))
+    cnn_model.add(Dropout(0.5, name='dropout_fc1'))
 
-    cnn_model.add(Dense(100, activation='elu'))
-    cnn_model.add(Dropout(0.5))
+    cnn_model.add(Dense(100, activation='elu', name='fc2'))
+    cnn_model.add(Dropout(0.5, name='dropout_fc2'))
 
-    cnn_model.add(Dense(10, activation='elu'))
-    cnn_model.add(Dropout(0.5))
+    cnn_model.add(Dense(10, activation='elu', name='fc3'))
+    cnn_model.add(Dropout(0.5, name='dropout_fc3'))
 
-    cnn_model.add(Dense(1))
+    cnn_model.add(Dense(1, name='output'))
 
     cnn_model.compile(optimizer='adam', loss='mse')
 
