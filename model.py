@@ -166,8 +166,7 @@ def generator(folder, samples, batch_size=32, use_sides=False, use_flips=False, 
                                                angle=steer_angle,
                                                adjustment=adj)
                                                
-                    # used to generalize for both tracks
-                    # image = hist_eq(image)
+                    image = hist_eq(image)
 
                     x.append(image)
                     y.append(angle)
