@@ -142,8 +142,8 @@ def generator(folder, samples, batch_size=32, use_sides=False, use_flips=False, 
         for offset in range(0, num_samples, batch_size):
             batch_samples = samples[offset:offset + batch_size]
 
-            x_train = []
-            y_train = []
+            x = []
+            y = []
             for batch_sample in batch_samples:
                 steer_angle = float(batch_sample[3])
 
@@ -162,18 +162,18 @@ def generator(folder, samples, batch_size=32, use_sides=False, use_flips=False, 
                                                adjustment=adj)
                     #image = hist_eq(image)
 
-                    x_train.append(image)
-                    y_train.append(angle)
+                    x.append(image)
+                    y.append(angle)
 
                     if use_flips:
                         flip_img, flip_ang = flip_img_angle(image, angle)
-                        x_train.append(flip_img)
-                        y_train.append(flip_ang)
+                        x.append(flip_img)
+                        y.append(flip_ang)
 
-            x_train = np.array(x_train)
-            y_train = np.array(y_train)
+            x = np.array(x_train)
+            y = np.array(y_train)
 
-            yield x_train, y_train
+            yield x, y
 
 
 def main():
