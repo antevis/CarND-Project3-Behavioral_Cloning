@@ -239,4 +239,4 @@ Adding this to the model as a Lambda layer might be tricky as OpenCV is rather p
 
 After this, car could **successfully pass both tracks 1 and 2 in autonomous mode**, though on Track 1 its behavior is a bit different from when the model was trained on Track 1 data only. As expected, it sticks to the right side of the track, though its behavior in general is a bit more wobbly.
 
-The submitted model is the one trained for Track 1 **only**, as it produce more smooth, natural and center-lane driving style for that Track 1. 
+The submitted model is the one trained for Track 1 **only**, as it produces more smooth, natural and center-lane driving style for that Track 1. 
