@@ -117,7 +117,7 @@ Cropping applied within the model *(model.py line 20)*, and, if chosen, cuts 60 
 
 ![alt text][fuzzy_sh_activations]
 
-From this example, one could tell that **FeatureMap 2** is really excited about **Color plane 0** (which is red), while *FeatureMap 0* activates on darker values.
+From this example, one could tell that **FeatureMap 2** is really excited about **Color plane 0** (which is red), while **FeatureMap 0** activates on darker values.
 
 **One more example, from Track 2:**
 
@@ -132,7 +132,7 @@ From this example, one could tell that **FeatureMap 2** is really excited about 
 ![alt text][track2_activations]
 
 All color planes look almost identical -- in fact, the original image looks almost grayscale, with a slight greenish bias at the lower-right.
-**FeatureMap 0** confirms it's preference towards low values while *FeatureMap 2* almost replicates red color plane (0).
+**FeatureMap 0** confirms it's preference towards low values while **FeatureMap 2** almost replicates red color plane **(0)**.
 
 It's hard to tell whether there is a direct separation of color planes going on in this layer, but **it is in fact helps** the model to generalize.
 
@@ -167,7 +167,7 @@ The final model architecture *(model.py lines 14-52)* consists of a convolutiona
 
 #### 3. Creation of the Training Set & Training Process
 
-As mentioned above, turns out that the dataset of **8036** steering 'observations' provided by Udacity contains enough data to create a generator pipeline for successful convergence to Track 1. However, in my case this assumes utilizing images from all three 'cameras' and horizontal flipping of all of those triplets. **This effectively inflated available training data by a factor of 6**. Steering adjustment of +0.25 and -0.25 for left and right images had been applied.
+As mentioned above, turns out that the dataset of **8036** steering 'observations' provided by Udacity **contains enough data** to create a generator pipeline for successful convergence to Track 1. However, in my case this assumes utilizing images from all three 'cameras' and horizontal flipping of all of those triplets. **This effectively inflated available training data by a factor of 6**. Steering adjustment of +0.25 and -0.25 for left and right images had been applied.
 
 **Here is an example of the triplet:**
 
