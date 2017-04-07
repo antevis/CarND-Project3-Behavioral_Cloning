@@ -237,4 +237,4 @@ In my humble opinion though, equalizing all RGB planes makes the fuzzy shoulder 
 
 Adding this to the model as a Lambda layer might be tricky as OpenCV is rather picky about the input data. This is obviously possible but I decided to leave it for later and just do pre-processing outside the model (in the generator), though it requires to **modify the pipeline in *drive.py* to match the same pre-processing at drive time**.
 
-After this, car could **successfully pass both tracks 1 and 2 in autonomously**. Worth noting that its behaviour on Track 1 has changed positively compared to the initial model generalized to Track 1: it sticks to the right side of the track throughout almost all the Track 1.
+After this, car could **successfully pass both tracks 1 and 2 autonomously**. Worth noting that its behaviour on Track 1 has changed positively compared to the initial model generalized to Track 1: it sticks to the right side of the track throughout almost all the Track 1.
