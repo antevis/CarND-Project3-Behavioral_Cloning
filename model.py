@@ -187,11 +187,11 @@ def main():
     use_side_imgs = prompt_for_input_categorical('Use side images? (y/n): ', yn) == yn[0]
 
     if use_side_imgs:
-        steer_adjustment = prompt_for_float('Please provide adjustment value (float 0 to 1):')
+        steer_adjustment = prompt_for_float('Please provide adjustment value (float 0 to 1): ')
     use_flip_imgs = prompt_for_input_categorical('Add flipped images? (y/n): ', yn) == yn[0]
     use_crop_imgs = prompt_for_input_categorical('Crop images? (y/n): ', yn) == yn[0]
-    batch_size = prompt_for_int('Enter batch size (16, 32, etc.):')
-    epoch_count = prompt_for_int('Enter number of epochs (1, 2, 3, etc.')
+    batch_size = prompt_for_int('Enter batch size (16, 32, etc.): ')
+    epoch_count = prompt_for_int('Enter number of epochs (1, 2, 3, etc.): ')
 
     csv_folder = 'drive_data_{}/'.format(dataset)
     csv_records = csv_lines(csv_folder)

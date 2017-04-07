@@ -15,20 +15,30 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[fuzzy_shoulder]: ./examples/placeholder.png "Model Visualization"
-[fuzzy_sh_activations]: ./examples/placeholder.png "Grayscaling"
-[fuzzp_sh_colorplanes]: ./examples/placeholder_small.png "Recovery Image"
-[track2_curve]: ./examples/placeholder_small.png "Recovery Image"
-[track2_colorplanes]: ./examples/placeholder_small.png "Recovery Image"
-[track2_activations]: ./examples/placeholder_small.png "Normal Image"
-[triplet]: ./examples/placeholder_small.png "Flipped Image"
-[triplet_flipped]: ./examples/placeholder_small.png "Flipped Image"
-[triplet_track2]: ./examples/placeholder_small.png "Flipped Image"
-[triplet_track2_flipped]: ./examples/placeholder_small.png "Flipped Image"
-[rgb_hist]:
-[hsv_hist]:
-[hls_hist]:
-
+[fuzzy_shoulder]: ./examples/fuzzy_shoulder.png "Fuzzy shoulder"
+[fuzzy_sh_activations]: ./examples/fuzzy_sh_activations.png "Fuzzy shoulder activations"
+[fuzzp_sh_colorplanes]: ./examples/fuzzy_sh_colorplanes.png "Fuzzy shoulder color planes"
+[track2_curve]: ./examples/track2.png "Track 2"
+[track2_colorplanes]: ./examples/track2_colorplanes.png "Track 2 color planes"
+[track2_activations]: ./examples/track2_featuremaps.png "Track 2 activations"
+[triplet]: ./examples/triplet.png "Triplet"
+[triplet_flipped]: ./examples/triplet_flip.png "Flipped Triplet"
+[triplet_track2]: ./examples/triplet_track2.png "Triplet Track 2"
+[rgb_hist]: ./examples/rgb_hist.png "RGB Histogtam equalization"
+[rgb_hist_crop]: ./examples/rgb_hist_crop.png "RGB Histogtam equalization, cropped"
+[rgb_hist_crop_0]: ./examples/rgb_hist_crop_0.png "Plane 0 after Hist"
+[rgb_hist_crop_1]: ./examples/rgb_hist_crop_1.png "Plane 1 after Hist"
+[rgb_hist_crop_2]: ./examples/rgb_hist_crop_2.png "Plane 2 after Hist"
+[hsv_hist]: ./examples/hsv_hist.png "V-plane hist eq in HSV space"
+[hsv_hist_crop]: ./examples/hsv_hist_crop.png "HSV Histogtam equalization, cropped"
+[hsv_hist_crop_0]: ./examples/hsv_hist_crop_0.png "Plane 0 after HSV Hist"
+[hsv_hist_crop_1]: ./examples/hsv_hist_crop_1.png "Plane 1 after HSV Hist"
+[hsv_hist_crop_2]: ./examples/hsv_hist_crop_2.png "Plane 2 after HSV Hist"
+[hls_hist]: ./examples/hsv_hist.png "L-plane hist eq in HSL space"
+[hls_hist_crop]: ./examples/hsv_hist_crop.png "HLS Histogtam equalization, cropped"
+[hls_hist_crop_0]: ./examples/hls_hist_crop_0.png "Plane 0 after HLS Hist"
+[hls_hist_crop_1]: ./examples/hls_hist_crop_1.png "Plane 1 after HLS Hist"
+[hls_hist_crop_2]: ./examples/hls_hist_crop_2.png "Plane 2 after HLS Hist"
 
 
 ## Rubric Points
@@ -101,9 +111,11 @@ Here is an example of what excites each of three feature maps in the image repre
 
 ![alt text][fuzzy_shoulder]
 
-Here are three color planes (RGB) of the cropped version of the image (more on cropping later):
+Here are three color planes (RGB) of the cropped version of the image:
 
 ![alt text][fuzzp_sh_colorplanes]
+
+Cropping applied within the model (model.py line 20), and, if chosen, cuts 60 and 24 pixels from top and bottom of the images respectively. This forces network to focus on the driveway and reduces model size.
 
 And here are the activations of three feature maps of our first convolutional layer:
 
@@ -157,24 +169,29 @@ The final model architecture (model.py lines 14-52) consists of a convolutional 
 
 Keras out-of-the-box model visualization doesn't seem to work due to incompatibility of pydot package with Python 3.
 
+
 ####3. Creation of the Training Set & Training Process
 
 As mentioned above, turns out that the dataset of 8036 steering 'observations' provided by Udaicity contains enough data to create a generator pipeline for successful convergence to Track 1. However, in my case this assumes utilizing images from all three 'cameras' and horizontal flipping of all of those triplets. This effectively inflated available training data by a factor of six. Steering adjustment of +0.25 and -0.25 for left and right images respectively had been applied.
 
-Here is an example of the triplet with steering angles adjusted for left and right images:
+Here is an example of the triplet:
 
 ![alt text][triplet]
 
-Ant this the same triplet, flipped horizontally:
+Despite being obviously in the middle of the curve, this particular triplet of images has the steering angle of zero. If generator encounters this datapoint, it would set angle value to 0.25 and -0.25 to left and right images respectively.
+
+And this the same triplet, flipped horizontally:
 
 ![alt text][triplet_flipped]
+
+Note that left becomes right and vice versa. Steering angles are inverted (multiplied by -1)
 
 I deliberately discarded the idea to manipulate the relative distribution of steering angle data, assuming that the distribution of steering angles may be not less important that the angles themselves for the network to infer the optimal driving behavior. That said, having a lot of zero angles considered to be a useful feature rather than an obstacle.
 
 However, to generalize to Track 2, one obviously have to collect some driving data from it.
 Track 2 has a clear separation of carriageway into two lanes for two-way driving throughout the whole track.
 
-The lanes are rather narrow, leaving little breadth for recovery maneuvers. The serpentine nature of the track itself implies that almost the whole driving process is one continuous recovery maneuver. That said, I decided to just drive carefully trying to stay in the left lane as much is possible. I choose joystick to control the car and managed to achieve quite good driving, to my subjective judgement of cause, staying within the lane bounds throughout the whole track.
+The lanes are rather narrow, leaving little breadth for recovery maneuvers. The serpentine nature of the track itself implies almost the whole driving process is one continuous recovery maneuver. That said, I decided to just drive carefully trying to stay in the left lane as much is possible. I choose joystick to control the car and managed to achieve quite good driving, to my subjective judgement of cause, staying within the lane bounds throughout the whole track.
 
 I recorded 3 full laps of driving Track 2 in both directions, collecting 20097 data points (image 'triplets'). Here is an example: 
 
@@ -198,16 +215,30 @@ Below are the axamples of histogram equalization:
 All three planes within RGB color space:
 
 ![alt text][rgb_hist]
+![alt text][rgb_hist_crop]
+![alt text][rgb_hist_crop_0]
+![alt text][rgb_hist_crop_1]
+![alt text][rgb_hist_crop_2]
 
 V-plane in HSV color space:
 
 ![alt text][hsv_hist]
+![alt text][rgb_hist_crop]
+![alt text][rgb_hist_crop_0]
+![alt text][rgb_hist_crop_1]
+![alt text][rgb_hist_crop_2]
 
 L-plane in HLS color space:
 
 ![alt text][hls_hist]
+![alt text][hls_hist_crop]
+![alt text][hls_hist_crop_0]
+![alt text][hls_hist_crop_1]
+![alt text][hls_hist_crop_2]
 
-Adding this to the model as a Lambda layer is tricky as OpenCV is rather picky to the input data. This is obviously possible but I decied to leave it for later and just do pre-processing outside the model (in the generator), though it requires to modifiy the pipeline in drive.py to match the same pre-processing at drive time.
+In my humble opinion, equalizing all RGB planes makes the fuzzy shoulder edges more pronounced.
+
+Adding this to the model as a Lambda layer is tricky as OpenCV is rather picky about the input data. This is obviously possible but I decied to leave it for later and just do pre-processing outside the model (in the generator), though it requires to modifiy the pipeline in drive.py to match the same pre-processing at drive time.
 
 After this, car could successfully pass both tracks 1 and 2 in autonomous mode, though on Track 1 its behavior is a bit different from when the model was trained on Track 1 data only. As expected, it sticks to the right side of the track, though its behavior in general is a bit more wobbly.
 
