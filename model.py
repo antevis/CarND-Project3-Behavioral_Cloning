@@ -52,6 +52,7 @@ def pcnt(row, col, ch, crop):
     return cnn_model
 
 
+# Prompt for limited number of options
 def prompt_for_input_categorical(message, options):
     response = ''
 
@@ -83,6 +84,7 @@ def prompt_for_int(message):
     return result
 
 
+# Read records from csv file
 def csv_lines(csv_folder, file_name='driving_log.csv'):
     records = []
 
@@ -94,6 +96,7 @@ def csv_lines(csv_folder, file_name='driving_log.csv'):
     return records
 
 
+# Return image with given angle adjustment
 def image_angle(file_name, angle, adjustment=0.0, resize_ratio=1.0):
     file_name = str(file_name)
     file_name = file_name.lstrip()
@@ -104,7 +107,8 @@ def image_angle(file_name, angle, adjustment=0.0, resize_ratio=1.0):
 
     if resize_ratio != 1.0:
         img = cv2.resize(img, dsize=(0, 0), fx=resize_ratio, fy=resize_ratio)
-
+    
+    # convert BGR to RGB
     img = img[:, :, ::-1]
 
     return img, angle
@@ -113,6 +117,7 @@ def image_angle(file_name, angle, adjustment=0.0, resize_ratio=1.0):
 # Histogram equalization. Converting to HSV or HLS and equalizing just value or lightness
 # planes respectively with further converting back to RGB might be more robust, but computationally more costly.
 # equalizing RGB planes also works
+# used for generalizing to both tracks
 def hist_eq(x, ch_to_heq=None):
     result = x.copy()
     if ch_to_heq is None:
@@ -160,7 +165,9 @@ def generator(folder, samples, batch_size=32, use_sides=False, use_flips=False, 
                     image, angle = image_angle(file_name=file_name,
                                                angle=steer_angle,
                                                adjustment=adj)
-                    #image = hist_eq(image)
+                                               
+                    # used to generalize for both tracks
+                    # image = hist_eq(image)
 
                     x.append(image)
                     y.append(angle)
@@ -170,8 +177,8 @@ def generator(folder, samples, batch_size=32, use_sides=False, use_flips=False, 
                         x.append(flip_img)
                         y.append(flip_ang)
 
-            x = np.array(x_train)
-            y = np.array(y_train)
+            x = np.array(x)
+            y = np.array(y)
 
             yield x, y
 
@@ -188,6 +195,7 @@ def main():
 
     if use_side_imgs:
         steer_adjustment = prompt_for_float('Please provide adjustment value (float 0 to 1): ')
+
     use_flip_imgs = prompt_for_input_categorical('Add flipped images? (y/n): ', yn) == yn[0]
     use_crop_imgs = prompt_for_input_categorical('Crop images? (y/n): ', yn) == yn[0]
     batch_size = prompt_for_int('Enter batch size (16, 32, etc.): ')
@@ -230,7 +238,7 @@ def main():
     val_steps = len(validation_samples) * inflate_factor / batch_size
     print('validation steps per epoch: {}'.format(val_steps))
 
-    proceed = prompt_for_input_categorical('Proceed? (y/n): ', ['y', 'n']) == 'y'
+    proceed = prompt_for_input_categorical('Proceed? (y/n): ', yn) == yn[0]
 
     if proceed:
         model.fit_generator(train_generator,

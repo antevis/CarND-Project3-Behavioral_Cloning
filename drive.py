@@ -106,7 +106,8 @@ def telemetry(sid, data):
         image = Image.open(BytesIO(base64.b64decode(imgString)))
         image_array = np.asarray(image)
 
-        #image_array = hist_eq(image_array)
+        # used to drive with the model generalized for both tracks.
+        # image_array = hist_eq(image_array)
 
         steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
 
