@@ -119,7 +119,7 @@ def telemetry(sid, data):
         image_array = np.asarray(image)
 
         if cnn_version != 'v1':
-            image_array = cv2.resize(image_array, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+            image_array = cv2.resize(src=image_array, dsize=(0, 0), fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
 
         # used to drive with the model generalized for both tracks.
         image_array = hist_eq(image_array)
