@@ -23,6 +23,8 @@ app = Flask(__name__)
 model = None
 prev_image_array = None
 
+cnn_version = 'v1'
+
 
 def hist_eq(x, ch_to_heq=None):
 
@@ -35,6 +37,16 @@ def hist_eq(x, ch_to_heq=None):
 
 
     return result
+
+
+# Prompt for limited number of options
+def prompt_for_input_categorical(message, options):
+    response = ''
+
+    while response not in options:
+        response = input(message)
+
+    return response
 
 
 def change_colorspace(x, new_color_space, ch_to_heq=None):
@@ -88,7 +100,7 @@ class SimplePIController:
 
 
 controller = SimplePIController(0.1, 0.002)
-set_speed = 9
+set_speed = 12
 controller.set_desired(set_speed)
 
 
@@ -105,6 +117,9 @@ def telemetry(sid, data):
         imgString = data["image"]
         image = Image.open(BytesIO(base64.b64decode(imgString)))
         image_array = np.asarray(image)
+
+        if cnn_version != 'v1':
+            image_array = cv2.resize(image_array, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
 
         # used to drive with the model generalized for both tracks.
         image_array = hist_eq(image_array)
@@ -156,6 +171,9 @@ if __name__ == '__main__':
         default='',
         help='Path to image folder. This is where the images from the run will be saved.'
     )
+
+    cnn_version = prompt_for_input_categorical('Please specify version: (v1,v2): ', ['v1', 'v2'])
+
     args = parser.parse_args()
 
     # check that model Keras version is same as local Keras version
