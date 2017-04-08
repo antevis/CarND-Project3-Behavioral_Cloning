@@ -158,7 +158,7 @@ def main():
     epoch_count = prompt_for_int('Enter number of epochs (1, 2, 3, etc.): ')
     model_name = prompt_for_input_categorical('Please specify the model (v1, v2): ', ['v1', 'v2'])
 
-    csv_folder = '/Users/Ivan/drive_data_{}/'.format(dataset)
+    csv_folder = 'drive_data_{}/'.format(dataset)
     csv_records = csv_lines(csv_folder)
     train_samples, validation_samples = train_test_split(csv_records, test_size=0.2)
 
